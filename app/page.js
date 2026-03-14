@@ -13,19 +13,12 @@ export default function Home() {
   const [injuries, setInjuries] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   async function generatePlan() {
-      async function copyPlan() {
-    if (!result) return;
-
-    try {
-      await navigator.clipboard.writeText(result);
-    } catch (error) {
-      console.error("Copy failed", error);
-    }
-  }
     setLoading(true);
     setResult("");
+    setCopied(false);
 
     try {
       const res = await fetch("/api/generate", {
@@ -33,7 +26,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-          body: JSON.stringify({
+        body: JSON.stringify({
           primaryGoal,
           goalDetails,
           experienceLevel,
@@ -51,6 +44,18 @@ export default function Home() {
       setResult("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function copyPlan() {
+    if (!result) return;
+
+    try {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error("Copy failed", error);
     }
   }
 
@@ -178,11 +183,17 @@ export default function Home() {
                 <option value="hybrid athlete">Hybrid athlete</option>
                 <option value="build muscle">Build muscle</option>
                 <option value="fat loss">Fat loss</option>
-                <option value="improve running performance">Improve running performance</option>
+                <option value="improve running performance">
+                  Improve running performance
+                </option>
                 <option value="prepare for a 5k">Prepare for a 5k</option>
                 <option value="prepare for a 10k">Prepare for a 10k</option>
-                <option value="prepare for a half marathon">Prepare for a half marathon</option>
-                <option value="prepare for a marathon">Prepare for a marathon</option>
+                <option value="prepare for a half marathon">
+                  Prepare for a half marathon
+                </option>
+                <option value="prepare for a marathon">
+                  Prepare for a marathon
+                </option>
               </select>
             </div>
 
@@ -255,7 +266,7 @@ export default function Home() {
               </div>
             </div>
 
-             <div>
+            <div>
               <label style={labelStyle}>Strength training experience</label>
               <select
                 value={strengthExperience}
@@ -322,7 +333,7 @@ export default function Home() {
             Your AI-generated hybrid training plan will appear here.
           </p>
 
-                    {result ? (
+          {result ? (
             <div
               style={{
                 display: "grid",
@@ -367,7 +378,7 @@ export default function Home() {
                       cursor: "pointer",
                     }}
                   >
-                    Copy plan
+                    {copied ? "Copied" : "Copy plan"}
                   </button>
 
                   <button
