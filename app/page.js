@@ -9,6 +9,7 @@ export default function Home() {
   const [sessionDuration, setSessionDuration] = useState("45 min");
   const [runningExperience, setRunningExperience] = useState("casual runner");
   const [strengthExperience, setStrengthExperience] = useState("beginner");
+  const [injuries, setInjuries] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,13 +23,14 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+          body: JSON.stringify({
           goal,
           experienceLevel,
           trainingDays,
           sessionDuration,
           runningExperience,
           strengthExperience,
+          injuries,
         }),
       });
 
@@ -224,7 +226,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div>
+             <div>
               <label style={labelStyle}>Strength training experience</label>
               <select
                 value={strengthExperience}
@@ -236,6 +238,16 @@ export default function Home() {
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
               </select>
+            </div>
+
+            <div>
+              <label style={labelStyle}>Injury or pain (optional)</label>
+              <input
+                placeholder="ex: mild knee pain, sore Achilles, lower back discomfort"
+                value={injuries}
+                onChange={(e) => setInjuries(e.target.value)}
+                style={inputStyle}
+              />
             </div>
 
             <button
