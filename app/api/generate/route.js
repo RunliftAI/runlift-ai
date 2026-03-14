@@ -15,6 +15,7 @@ export async function POST(req) {
       sessionDuration,
       runningExperience,
       strengthExperience,
+      injuries,
     } = body;
 
     const prompt = `
@@ -29,6 +30,7 @@ User profile:
 - Session duration: ${sessionDuration}
 - Running experience: ${runningExperience}
 - Strength training experience: ${strengthExperience}
+- Injury or pain: ${injuries || "none reported"}
 
 Instructions:
 1. Build a 6- to 8-week plan depending on the complexity of the goal and the user's level.
@@ -40,7 +42,8 @@ Instructions:
 7. Include a weekly structure that is easy to understand and follow.
 8. Make each session specific.
 9. Keep the plan motivating but practical.
-10. Use simple English and avoid unnecessary jargon.
+10. If injury or pain is mentioned, reduce impact and complexity where relevant, avoid aggressive loading, and include a short note encouraging caution and professional advice if pain persists.
+11. Use simple English and avoid unnecessary jargon.
 
 Output format:
 
