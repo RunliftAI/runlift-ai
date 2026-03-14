@@ -15,6 +15,15 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function generatePlan() {
+      async function copyPlan() {
+    if (!result) return;
+
+    try {
+      await navigator.clipboard.writeText(result);
+    } catch (error) {
+      console.error("Copy failed", error);
+    }
+  }
     setLoading(true);
     setResult("");
 
@@ -339,21 +348,44 @@ export default function Home() {
                   Generated plan
                 </div>
 
-                <button
-                  onClick={generatePlan}
-                  disabled={loading}
+                <div
                   style={{
-                    padding: "10px 14px",
-                    borderRadius: 10,
-                    border: "1px solid #d1d5db",
-                    background: "white",
-                    fontSize: 13,
-                    fontWeight: 600,
-                    cursor: "pointer",
+                    display: "flex",
+                    gap: 8,
+                    flexWrap: "wrap",
                   }}
                 >
-                  {loading ? "Generating..." : "Regenerate"}
-                </button>
+                  <button
+                    onClick={copyPlan}
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: 10,
+                      border: "1px solid #d1d5db",
+                      background: "white",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Copy plan
+                  </button>
+
+                  <button
+                    onClick={generatePlan}
+                    disabled={loading}
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: 10,
+                      border: "1px solid #d1d5db",
+                      background: "white",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {loading ? "Generating..." : "Regenerate"}
+                  </button>
+                </div>
               </div>
 
               <div
