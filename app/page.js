@@ -438,7 +438,7 @@ export default function Home() {
                 }}
                 onClick={() => alert("Payment page coming soon")}
               >
-                Unlock unlimited — 7€
+                Unlock unlimited — 5€
               </button>
             </div>
           )}
