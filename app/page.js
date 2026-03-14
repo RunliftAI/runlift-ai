@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [primaryGoal, setPrimaryGoal] = useState("hybrid athlete");
@@ -16,13 +16,11 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
     const [usageCount, setUsageCount] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
-  useState(() => {
-    if (typeof window !== "undefined") {
-      const savedCount = Number(localStorage.getItem("runlift_usage_count") || "0");
-      setUsageCount(savedCount);
-      setLimitReached(savedCount >= 3);
-    }
-  });
+  useEffect(() => {
+    const savedCount = Number(localStorage.getItem("runlift_usage_count") || "0");
+    setUsageCount(savedCount);
+    setLimitReached(savedCount >= 3);
+  }, []);
   async function generatePlan() {
     if (limitReached) {
       setResult("Free limit reached. Upgrade to unlock unlimited plans.");
@@ -144,37 +142,26 @@ export default function Home() {
           </div>
 
           <h1
-            style={{
-              fontSize: 42,
-              lineHeight: 1.1,
-              margin: "0 0 12px 0",
-            }}
-          >
-            Build your running + strength plan in under 60 seconds
-          </h1>
+  style={{
+    fontSize: 42,
+    lineHeight: 1.1,
+    margin: "0 0 12px 0",
+  }}
+>
+  Build your running + strength plan in under 60 seconds
+</h1>
 
-          <p
-            style={{
-              fontSize: 18,
-              lineHeight: 1.6,
-              color: "#4b5563",
-              marginBottom: 28,
-              maxWidth: 680,
-            }}
-          >
-            RunLift AI creates a simple, structured hybrid training plan based
-            on your goal, experience, schedule, and training background.
-                      <p
-            style={{
-              fontSize: 14,
-              color: "#6b7280",
-              marginTop: -10,
-              marginBottom: 24,
-              fontWeight: 600,
-            }}
-          >
-            Free plans used: {usageCount}/3
-          </p>
+<p
+  style={{
+    fontSize: 14,
+    color: "#6b7280",
+    marginTop: 10,
+    marginBottom: 20,
+    fontWeight: 600,
+  }}
+>
+  Free plans used: {usageCount}/3
+</p>
           </p>
 
           <div
