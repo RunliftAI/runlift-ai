@@ -281,23 +281,67 @@ export default function Home() {
             Your AI-generated hybrid training plan will appear here.
           </p>
 
-          {result ? (
-            <pre
+                    {result ? (
+            <div
               style={{
-                whiteSpace: "pre-wrap",
-                fontFamily:
-                  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                fontSize: 13,
-                lineHeight: 1.6,
-                background: "#f9fafb",
-                border: "1px solid #e5e7eb",
-                borderRadius: 14,
-                padding: 16,
-                overflowX: "auto",
+                display: "grid",
+                gap: 12,
               }}
             >
-              {result}
-            </pre>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: 12,
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "#6b7280",
+                    fontWeight: 600,
+                  }}
+                >
+                  Generated plan
+                </div>
+
+                <button
+                  onClick={generatePlan}
+                  disabled={loading}
+                  style={{
+                    padding: "10px 14px",
+                    borderRadius: 10,
+                    border: "1px solid #d1d5db",
+                    background: "white",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  {loading ? "Generating..." : "Regenerate"}
+                </button>
+              </div>
+
+              <div
+                style={{
+                  whiteSpace: "pre-wrap",
+                  fontFamily:
+                    'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                  fontSize: 14,
+                  lineHeight: 1.8,
+                  background: "#f9fafb",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 16,
+                  padding: 20,
+                  overflowX: "auto",
+                  color: "#111827",
+                }}
+              >
+                {result}
+              </div>
+            </div>
           ) : (
             <div
               style={{
