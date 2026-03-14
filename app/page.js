@@ -166,6 +166,16 @@ export default function Home() {
 >
   Build your running + strength plan in under 60 seconds
 </h1>
+<div
+  style={{
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#6b7280",
+    marginTop: 8
+  }}
+>
+  Free plans used: {usageCount}/3
+</div>
 
 <p
   style={{
