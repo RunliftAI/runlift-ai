@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [goal, setGoal] = useState("");
+  const [primaryGoal, setPrimaryGoal] = useState("hybrid athlete");
+  const [goalDetails, setGoalDetails] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("beginner");
   const [trainingDays, setTrainingDays] = useState("3");
   const [sessionDuration, setSessionDuration] = useState("45 min");
@@ -24,7 +25,8 @@ export default function Home() {
           "Content-Type": "application/json",
         },
           body: JSON.stringify({
-          goal,
+          primaryGoal,
+          goalDetails,
           experienceLevel,
           trainingDays,
           sessionDuration,
@@ -158,11 +160,29 @@ export default function Home() {
 
           <div style={{ display: "grid", gap: 16 }}>
             <div>
-              <label style={labelStyle}>Goal</label>
+              <label style={labelStyle}>Primary goal</label>
+              <select
+                value={primaryGoal}
+                onChange={(e) => setPrimaryGoal(e.target.value)}
+                style={inputStyle}
+              >
+                <option value="hybrid athlete">Hybrid athlete</option>
+                <option value="build muscle">Build muscle</option>
+                <option value="fat loss">Fat loss</option>
+                <option value="improve running performance">Improve running performance</option>
+                <option value="prepare for a 5k">Prepare for a 5k</option>
+                <option value="prepare for a 10k">Prepare for a 10k</option>
+                <option value="prepare for a half marathon">Prepare for a half marathon</option>
+                <option value="prepare for a marathon">Prepare for a marathon</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={labelStyle}>Goal details (optional)</label>
               <input
-                placeholder="ex: half marathon + strength"
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
+                placeholder="ex: keep 2 strength sessions while training for a half marathon"
+                value={goalDetails}
+                onChange={(e) => setGoalDetails(e.target.value)}
                 style={inputStyle}
               />
             </div>
