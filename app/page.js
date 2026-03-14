@@ -14,13 +14,15 @@ export default function Home() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-    const [usageCount, setUsageCount] = useState(0);
+  const [usageCount, setUsageCount] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
+
   useEffect(() => {
     const savedCount = Number(localStorage.getItem("runlift_usage_count") || "0");
     setUsageCount(savedCount);
     setLimitReached(savedCount >= 3);
   }, []);
+
   async function generatePlan() {
     if (limitReached) {
       setResult("Free limit reached. Upgrade to unlock unlimited plans.");
@@ -50,7 +52,7 @@ export default function Home() {
       });
 
       const data = await res.json();
-        const finalResult = data.plan || data.error || "No response received.";
+      const finalResult = data.plan || data.error || "No response received.";
       setResult(finalResult);
 
       if (data.plan) {
@@ -99,22 +101,6 @@ export default function Home() {
   };
 
   return (
-    <div
-  style={{
-    position: "fixed",
-    top: 20,
-    right: 20,
-    background: "#111827",
-    color: "white",
-    padding: "8px 14px",
-    borderRadius: 10,
-    fontSize: 13,
-    fontWeight: 600,
-    zIndex: 999,
-  }}
->
-  Free plans: {usageCount}/3
-</div>
     <main
       style={{
         minHeight: "100vh",
@@ -125,6 +111,24 @@ export default function Home() {
         color: "#111827",
       }}
     >
+      <div
+        style={{
+          position: "fixed",
+          top: 20,
+          right: 20,
+          background: "#111827",
+          color: "white",
+          padding: "8px 14px",
+          borderRadius: 10,
+          fontSize: 13,
+          fontWeight: 600,
+          zIndex: 999,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+        }}
+      >
+        Free plans: {usageCount}/3
+      </div>
+
       <div
         style={{
           maxWidth: 1100,
@@ -158,36 +162,26 @@ export default function Home() {
           </div>
 
           <h1
-  style={{
-    fontSize: 42,
-    lineHeight: 1.1,
-    margin: "0 0 12px 0",
-  }}
->
-  Build your running + strength plan in under 60 seconds
-</h1>
-<div
-  style={{
-    fontSize: 14,
-    fontWeight: 600,
-    color: "#6b7280",
-    marginTop: 8
-  }}
->
-  Free plans used: {usageCount}/3
-</div>
+            style={{
+              fontSize: 42,
+              lineHeight: 1.1,
+              margin: "0 0 12px 0",
+            }}
+          >
+            Build your running + strength plan in under 60 seconds
+          </h1>
 
-<p
-  style={{
-    fontSize: 14,
-    color: "#6b7280",
-    marginTop: 10,
-    marginBottom: 20,
-    fontWeight: 600,
-  }}
->
-  Free plans used: {usageCount}/3
-</p>
+          <p
+            style={{
+              fontSize: 18,
+              lineHeight: 1.6,
+              color: "#4b5563",
+              marginBottom: 24,
+              maxWidth: 680,
+            }}
+          >
+            RunLift AI creates a simple, structured hybrid training plan based
+            on your goal, experience, schedule, and training background.
           </p>
 
           <div
@@ -349,7 +343,8 @@ export default function Home() {
                 color: "white",
                 fontSize: 15,
                 fontWeight: 700,
-                cursor: "pointer",
+                cursor: loading || limitReached ? "not-allowed" : "pointer",
+                opacity: loading || limitReached ? 0.7 : 1,
               }}
             >
               {loading
@@ -434,7 +429,7 @@ export default function Home() {
 
                   <button
                     onClick={generatePlan}
-                    disabled={loading}
+                    disabled={loading || limitReached}
                     style={{
                       padding: "10px 14px",
                       borderRadius: 10,
@@ -442,10 +437,15 @@ export default function Home() {
                       background: "white",
                       fontSize: 13,
                       fontWeight: 600,
-                      cursor: "pointer",
+                      cursor: loading || limitReached ? "not-allowed" : "pointer",
+                      opacity: loading || limitReached ? 0.7 : 1,
                     }}
                   >
-                    {loading ? "Generating..." : "Regenerate"}
+                    {loading
+                      ? "Generating..."
+                      : limitReached
+                      ? "Free limit reached"
+                      : "Regenerate"}
                   </button>
                 </div>
               </div>
