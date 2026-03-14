@@ -9,7 +9,8 @@ export async function POST(req) {
     const body = await req.json();
 
     const {
-      goal,
+      primaryGoal,
+      goalDetails,
       experienceLevel,
       trainingDays,
       sessionDuration,
@@ -21,10 +22,11 @@ export async function POST(req) {
     const prompt = `
 You are an evidence-informed hybrid training coach.
 
-Your job is to create a realistic, progressive, safe, and easy-to-follow training plan for a user who wants to combine running and strength training, or prioritize one of the two depending on their goal.
+Your job is to create a realistic, progressive, safe, and easy-to-follow training plan based on the user's primary goal, training level, schedule, and constraints. The plan may combine running and strength training or prioritize one depending on the goal.
 
 User profile:
-- Goal: ${goal}
+- Primary goal: ${primaryGoal}
+- Goal details: ${goalDetails || "none provided"}
 - Experience level: ${experienceLevel}
 - Training days per week: ${trainingDays}
 - Session duration: ${sessionDuration}
