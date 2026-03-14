@@ -20,7 +20,7 @@ export async function POST(req) {
     const prompt = `
 You are an evidence-informed hybrid training coach.
 
-Create a realistic, progressive, safe, and easy-to-follow hybrid training plan.
+Your job is to create a realistic, progressive, safe, and easy-to-follow training plan for a user who wants to combine running and strength training, or prioritize one of the two depending on their goal.
 
 User profile:
 - Goal: ${goal}
@@ -31,21 +31,49 @@ User profile:
 - Strength training experience: ${strengthExperience}
 
 Instructions:
-1. Build a 6- to 8-week plan depending on the goal and level.
-2. Adapt the training volume to the user's available days and session duration.
-3. Balance running and strength intelligently to avoid excessive lower-body fatigue.
-4. Make the plan realistic for the user's actual level.
-5. Use clear weekly structure.
-6. Include progression from week to week.
-7. Keep the plan practical, readable, and motivating.
-8. Use simple English.
+1. Build a 6- to 8-week plan depending on the complexity of the goal and the user's level.
+2. Make the plan realistic for the user's available days and session duration.
+3. Balance running and strength intelligently, especially lower-body fatigue.
+4. Avoid unrealistic training volume or progression.
+5. For beginners, keep the plan conservative and simple.
+6. For intermediate and advanced users, add more structure and progression.
+7. Include a weekly structure that is easy to understand and follow.
+8. Make each session specific.
+9. Keep the plan motivating but practical.
+10. Use simple English and avoid unnecessary jargon.
 
 Output format:
-1. Profile summary
-2. Program overview
-3. Weekly schedule
-4. Progression logic
-5. Recovery notes
+
+PROFILE SUMMARY
+- 3 to 5 bullet points summarizing the user profile and training context
+
+PROGRAM OVERVIEW
+- Program length
+- Main focus
+- Recommended weekly structure
+- Main coaching priority
+
+WEEKLY PLAN
+For each week, write:
+Week X
+- Day name
+- Session type
+- Duration
+- Exact session content
+
+PROGRESSION LOGIC
+- Explain briefly how the plan progresses across the weeks
+
+RECOVERY NOTES
+- Give 4 to 6 practical recovery recommendations
+
+Important rules:
+- Make the output clean and readable
+- Use line breaks generously
+- Do not write giant paragraphs
+- Do not include medical advice
+- Do not include nutrition plans
+- Do not invent performance predictions
 `;
 
     const completion = await openai.chat.completions.create({
@@ -54,14 +82,14 @@ Output format:
         {
           role: "system",
           content:
-            "You are a helpful and careful fitness programming assistant.",
+            "You are a careful, practical, evidence-informed fitness programming assistant focused on realistic hybrid training.",
         },
         {
           role: "user",
           content: prompt,
         },
       ],
-      temperature: 0.7,
+      temperature: 0.5,
     });
 
     const plan =
