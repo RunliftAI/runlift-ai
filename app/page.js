@@ -99,6 +99,22 @@ export default function Home() {
   };
 
   return (
+    <div
+  style={{
+    position: "fixed",
+    top: 20,
+    right: 20,
+    background: "#111827",
+    color: "white",
+    padding: "8px 14px",
+    borderRadius: 10,
+    fontSize: 13,
+    fontWeight: 600,
+    zIndex: 999,
+  }}
+>
+  Free plans: {usageCount}/3
+</div>
     <main
       style={{
         minHeight: "100vh",
