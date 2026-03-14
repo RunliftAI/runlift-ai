@@ -14,8 +14,21 @@ export default function Home() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
+    const [usageCount, setUsageCount] = useState(0);
+  const [limitReached, setLimitReached] = useState(false);
+  useState(() => {
+    if (typeof window !== "undefined") {
+      const savedCount = Number(localStorage.getItem("runlift_usage_count") || "0");
+      setUsageCount(savedCount);
+      setLimitReached(savedCount >= 3);
+    }
+  });
   async function generatePlan() {
+    if (limitReached) {
+      setResult("Free limit reached. Upgrade to unlock unlimited plans.");
+      return;
+    }
+
     setLoading(true);
     setResult("");
     setCopied(false);
@@ -39,7 +52,17 @@ export default function Home() {
       });
 
       const data = await res.json();
-      setResult(data.plan || data.error || "No response received.");
+        const finalResult = data.plan || data.error || "No response received.";
+      setResult(finalResult);
+
+      if (data.plan) {
+        const newCount = usageCount + 1;
+        setUsageCount(newCount);
+        localStorage.setItem("runlift_usage_count", String(newCount));
+        if (newCount >= 3) {
+          setLimitReached(true);
+        }
+      }
     } catch (error) {
       setResult("Something went wrong. Please try again.");
     } finally {
@@ -141,6 +164,17 @@ export default function Home() {
           >
             RunLift AI creates a simple, structured hybrid training plan based
             on your goal, experience, schedule, and training background.
+                      <p
+            style={{
+              fontSize: 14,
+              color: "#6b7280",
+              marginTop: -10,
+              marginBottom: 24,
+              fontWeight: 600,
+            }}
+          >
+            Free plans used: {usageCount}/3
+          </p>
           </p>
 
           <div
@@ -292,7 +326,7 @@ export default function Home() {
 
             <button
               onClick={generatePlan}
-              disabled={loading}
+              disabled={loading || limitReached}
               style={{
                 marginTop: 8,
                 padding: "14px 18px",
@@ -305,7 +339,11 @@ export default function Home() {
                 cursor: "pointer",
               }}
             >
-              {loading ? "Generating..." : "Generate my plan"}
+              {loading
+                ? "Generating..."
+                : limitReached
+                ? "Free limit reached"
+                : "Generate my plan"}
             </button>
           </div>
         </section>
